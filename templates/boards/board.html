@@ -1,7 +1,11 @@
-<h1>Project Board</h1>
+<!DOCTYPE html>
+{% block content %}
 
-<form method="POST">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <!-- <button>Sign Up</button> -->
-</form>
+  <h1>Project Board</h1>
+
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <!-- <button>Sign Up</button> -->
+  </form>
+{% endblock %}

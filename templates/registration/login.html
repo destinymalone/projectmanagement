@@ -1,4 +1,11 @@
-<form method="POST">
-  {% csrf_token %} {{ form }}
-  <button>Login</button>
-</form>
+<!DOCTYPE html>
+{% extends "registration.html" %}
+
+{% block content %}
+
+  <form method="POST">
+    {% csrf_token %} {{ form }}
+    <button>Login</button>
+  </form>
+
+{% endblock %}

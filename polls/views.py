@@ -4,7 +4,7 @@ from django import views
 from django.shortcuts import redirect, render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView
-# from polls.models import CreateBoard
+from polls.models import CreateBoard
 from polls.forms import CreateBoardForm
 from django.http import HttpResponseRedirect, request
 from django.urls import reverse_lazy
@@ -23,5 +23,5 @@ class CreateBoardView(CreateView, LoginRequiredMixin):
 
 class UserDetailView(views.View):
     def get(self, request, id):
-        board = CreateBoard.objects.select_related("user").get(id=id)
-        return render(request, "boards/detail.html", {"board": board, "form": CreateBoardForm()}) 
+        username = CreateBoard.objects.select_related("user").get(id=id)
+        return render(request, "boards/detail.html", {"User": username, "form": CreateBoardForm()}) 

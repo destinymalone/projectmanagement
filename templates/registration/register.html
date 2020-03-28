@@ -1,7 +1,12 @@
-<h1>Sign Up you fool!</h1>
+<!DOCTYPE html>
 
-<form method="POST">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button>Sign Up</button>
-</form>
+{% block content %}
+
+  <h1>Sign Up you fool!</h1>
+
+  <form method="POST">
+    {% csrf_token %} {{ form.as_p }}
+    <button>Sign Up</button>
+  </form>
+
+{% endblock %}
