@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 {% block content %}
 
-<h1>Personal Boards</h1>
+<h1>Project Board</h1>
 
 <form method="POST">
   {% csrf_token %} {{ form.as_p }}
-  <button>Create new board</button>
+  <button>Add a card</button>
 </form>
 {% endblock %}
