@@ -10,14 +10,9 @@ from django.db.models import CASCADE, PROTECT
 class CreateBoard(models.Model):
     username = models.ForeignKey(User, on_delete=models.PROTECT)
     title = models.CharField(max_length=100)
-
-class UserBoardDetail(models.Model):
-    title = models.ForeignKey(CreateBoard, on_delete=models.CASCADE)
-    board = models.ForeignKey(CreateBoard, on__delete=models.CASCADE)
-    
+  
 class UserBoardList(model.Model):
-    list = models.CharField()
     card = models.CharField()
 
-class UserCardDetail(models.Model):
+class UserListCard(models.Model):
     description = models.TextField()
