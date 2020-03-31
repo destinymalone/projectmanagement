@@ -11,8 +11,9 @@ class CreateBoard(models.Model):
     username = models.ForeignKey(User, on_delete=models.PROTECT)
     title = models.CharField(max_length=100)
   
-class UserBoardList(model.Model):
-    card = models.CharField()
+class UserBoardList(models.Model):
+    title = models.CharField(max_length=100)
+    card = models.CharField(max_length=100)
 
 class UserListCard(models.Model):
     description = models.TextField()

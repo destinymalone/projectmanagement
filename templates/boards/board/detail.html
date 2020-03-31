@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 {% block content %}
 
-<h1>Project Board</h1>
+<h1>Project Board - {{ board.title }} </h1>
 
-<form method="GET">
-  {% csrf_token %} {{ form.as_p }}
-</form>
+<a href="{% 'list_create' board.id %}">Create a New List</a>
+
+{% for list in board.list_set.all %}
+ {{ list }}
+{% endfor %}
+
 {% endblock %}

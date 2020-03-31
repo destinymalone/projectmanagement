@@ -4,9 +4,10 @@ from django import forms
 from django.contrib.auth.models import User
 from polls.models import CreateBoard, UserBoardList, UserListCard
 
-class CreateBoardForm(forms.Form):
-    title = forms.CharField()
-
+class CreateBoardForm(forms.ModelForm):
+    class Meta:
+        model = CreateBoard
+        fields = ['title']
 
 class BoardEditForm(forms.ModelForm):
     class Meta:
@@ -22,8 +23,8 @@ class UserListForm(forms.Form):
 class ListEditForm(forms.ModelForm):
     class Meta:
         model = UserBoardList
-        fields = ["list", "card"]
-        widgets = {"list": forms.Textarea()}
+        fields = ["title", "card"]
+        widgets = {"title": forms.Textarea()}
 
 class UserCardForm(forms.Form):
     description = forms.CharField()

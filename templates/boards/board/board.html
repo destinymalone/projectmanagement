@@ -7,4 +7,9 @@
   {% csrf_token %} {{ form.as_p }}
   <button>Create new board</button>
 </form>
-{% endblock %}
+
+{% for board in user.createboard_set.all %}
+<p style="background-color: hsl(249, 34%, 53%); padding: 1rem">
+  <a href="{% url 'board_detail' board.id %}">{{ board.title }}</a>
+</p>
+{% endfor %} {% endblock %}
