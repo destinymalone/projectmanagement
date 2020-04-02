@@ -12,8 +12,15 @@ class CreateBoard(models.Model):
     title = models.CharField(max_length=100)
   
 class UserBoardList(models.Model):
-    title = models.CharField(max_length=100)
+    header = models.ForeignKey(CreateBoard, on_delete=CASCADE)
+    list_title = models.CharField(max_length=100)
     card = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.list_title} | {self.card}"
 
 class UserListCard(models.Model):
     description = models.TextField()
+
+    def __str__(self):
+        return f"{self.description}"
