@@ -24,7 +24,7 @@ class BoardListForm(forms.ModelForm):
 class ListEditForm(forms.ModelForm):
     class Meta:
         model = UserBoardList
-        fields = ["title", "card"]
+        fields = ["list_title", "card"]
         widgets = {"title": forms.Textarea()}
 
 class UserCardForm(forms.Form):
