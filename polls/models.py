@@ -12,7 +12,6 @@ class CreateBoard(models.Model):
     title = models.CharField(max_length=100)
   
 class UserBoardList(models.Model):
-    header = models.ForeignKey(CreateBoard, on_delete=CASCADE)
     list_title = models.CharField(max_length=100)
     card = models.CharField(max_length=100)
 

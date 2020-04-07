@@ -8,8 +8,23 @@
   <button>Create new board</button>
 </form>
 
+
 {% for board in user.createboard_set.all %}
 <p style="background-color: hsl(249, 34%, 53%); padding: 1rem">
   <a href="{% url 'board_detail' board.id %}">{{ board.title }}</a>
 </p>
-{% endfor %} {% endblock %}
+{% endfor %}
+
+<form method="POST">
+  {% csrf_token %} {{ list_create.as_p }}
+  <button>Create new list</button>
+</form>
+
+
+{% for list_create in user.userboardlist_set.all %}
+<p style="background-color: hsl(249, 34%, 53%); padding: 1rem">
+  <a href="{% url 'list_detail' list_create.id %}">{{ list_create.list_title }}</a>
+</p>
+{% endfor %}
+
+{% endblock %}

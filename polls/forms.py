@@ -15,7 +15,7 @@ class BoardEditForm(forms.ModelForm):
         fields = ["username", "title"]
         widgets = {"title": forms.TextInput()}
 
-class BoardListForm(forms.ModelForm):
+class CreateListForm(forms.ModelForm):
     class Meta:
         model = UserBoardList
         fields = ['list_title', 'card']
@@ -25,9 +25,9 @@ class ListEditForm(forms.ModelForm):
     class Meta:
         model = UserBoardList
         fields = ["list_title", "card"]
-        widgets = {"title": forms.Textarea()}
+        widgets = {"list_title": forms.Textarea()}
 
-class UserCardForm(forms.Form):
+class CreateCardForm(forms.Form):
     description = forms.CharField()
 
 class CardEditForm(forms.ModelForm):

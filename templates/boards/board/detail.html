@@ -10,8 +10,6 @@
   </div>
 </form>
 
-<h1>Project Board - {{ header.title }}</h1>
-
 <form method="POST">
   {% csrf_token %} {{ form.as_p }}
   <button>Add a new list</button>
@@ -19,7 +17,7 @@
 
 {% for list_create in user.userboardlist_set.all %}
 <p style="background-color: hsl(249, 34%, 53%); padding: 1rem">
-  <a href="{% url 'board_detail' list_create.id %}"
+  <a href="{% url 'list_detail' list_create.id %}"
     >{{ list_create.list_title }}</a
   >
 </p>
