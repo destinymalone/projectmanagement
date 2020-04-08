@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+{% extends 'boards/board.html' %}
+{% block content %}
+
+<form method="POST">
+  {% csrf_token %} {{ list_create.as_p }}
+  <button>Create new list</button>
+</form>
+
+{% for list in board.userboardlist_set.all %}
+<p style="background-color: hsl(249, 34%, 53%); padding: 1rem;">
+  <a href="{% url 'list_detail' list_create.id %}"
+    >- {{ list_create.list_title }}</a
+  >
+</p>
+{% endfor %} {% endblock %}

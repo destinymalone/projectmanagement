@@ -1,0 +1,11 @@
+<form method="POST">
+    {% csrf_token %} {{ list_edit.as_p }}
+    <button>Edit list</button>
+  </form>
+  
+  
+  {% for list_edit in user.userboardlist_set.all %}
+  <p style="background-color: hsl(249, 34%, 53%); padding: 1rem">
+    <a href="{% url 'list_edit' list_create.id %}">{{ list_edit.list_title }}</a>
+  </p>
+  {% endfor %}

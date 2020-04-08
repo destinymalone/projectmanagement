@@ -12,6 +12,7 @@ class CreateBoard(models.Model):
     title = models.CharField(max_length=100)
   
 class UserBoardList(models.Model):
+    username = models.ForeignKey(User, on_delete=models.PROTECT, default=1) 
     list_title = models.CharField(max_length=100)
     card = models.CharField(max_length=100)
 
@@ -19,7 +20,9 @@ class UserBoardList(models.Model):
         return f"{self.list_title} | {self.card}"
 
 class UserListCard(models.Model):
+    username = models.ForeignKey(User, on_delete=models.PROTECT, default=1)
     description = models.TextField()
 
     def __str__(self):
         return f"{self.description}"
+ 
