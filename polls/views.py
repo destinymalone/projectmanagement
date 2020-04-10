@@ -61,17 +61,14 @@ class BoardListView(LoginRequiredMixin, CreateView):
     form_class = CreateListForm
     template_name = "boards/board/list.html"
     success_url = reverse_lazy("board")
-
-    # def form_valid(self, form):
-    #     form.instance.createboard_set= self.request.user
-    #     return super().form_valid(form)
+    pk_url_kwarg = "id"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        print(context)
         context['list_create'] = CreateListForm()
-        # context['list_edit'] = ListEditForm()
-        # context['card_create'] = CreateCardForm()
-        # context['card_edit'] = CardEditForm()
+        id = self.request.path_info.split('/')[-1] # SORRY THIS IS HACKY
+        context['board'] = self.request.user.createboard_set.get(id=id)
         return context
   
 

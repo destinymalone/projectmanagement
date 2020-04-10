@@ -1,16 +1,24 @@
 <!DOCTYPE html>
-{% extends 'boards/board.html' %}
-{% block content %}
+{% extends 'boards/board/detail.html' %} {% block content %}
 
-<form method="POST">
+<h1>Project Board - {{ board.title }}</h1>
+<form action="" method="POST">
   {% csrf_token %} {{ list_create.as_p }}
   <button>Create new list</button>
 </form>
 
-{% for list in board.userboardlist_set.all %}
+{% for board_list in lists %}
 <p style="background-color: hsl(249, 34%, 53%); padding: 1rem;">
-  <a href="{% url 'list_detail' list_create.id %}"
-    >- {{ list_create.list_title }}</a
-  >
+  <a href="{% url 'board_detail' list.id %}">{{ board_list.list_title }}</a>
 </p>
-{% endfor %} {% endblock %}
+
+
+{% for card in board_list.UserBoardList %}
+<p style="background-color: hsl(249, 34%, 53%); padding: 1rem;">
+  <a href="{% url 'list_detail' list_create.id %}">- {{ card.description }}</a>
+</p>
+{% endfor %} 
+
+{% endfor %} 
+
+{% endblock %}
