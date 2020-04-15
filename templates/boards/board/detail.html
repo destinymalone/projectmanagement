@@ -11,10 +11,17 @@
   </div>
 </form>
 
-<h3></h3>{{ board.list_create }}
+<h3>Lists</h3>
+{% for list in board.list_set.all %}
+<p style="background-color: hsl(249, 34%, 53%); padding: 1rem; width: 50%;">
+  <a href="{% url 'list_detail' list.id %}">{{ list.title }}</a>
+</p>
+{% endfor %}
+<br />
+<h3>Cards</h3>
 
-{% for list in board.userboardlist_set.all %}
-<p style="background-color: hsl(249, 34%, 53%); padding: 1rem;">
-  <a href="{% url 'list_detail' list.id %}">{{ list.list_title }}</a>
+{% for card in list.card_set.all %}
+<p style="background-color: hsl(249, 34%, 53%); padding: 1rem; width: 50%;">
+  <a href="{% url 'board_detail' card.id %}">- {{ card.description }}</a>
 </p>
 {% endfor %} {% endblock %}

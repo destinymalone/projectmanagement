@@ -1,10 +1,50 @@
+{% load static %}
+
 <!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <title>login</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/login.css' %}"
+    />
+  </head>
 
-{% block content %}
+  <body>
+    <div class="site-container">
+      <!-- {% block content %} -->
+      <!-- <form method="POST">
+      {% csrf_token %} {{ form }}
+      <button>Login</button>
+    </form> -->
 
-  <form method="POST">
-    {% csrf_token %} {{ form }}
-    <button>Login</button>
-  </form>
-
-{% endblock %}
+      <form class="form-3" method="POST">
+        {% csrf_token %}
+        <p class="clearfix">
+          <label for="login">Username</label>
+          <input type="text" name="username" id="login" placeholder="Username" />
+        </p>
+        <p class="clearfix">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Password"
+          />
+        </p>
+        <p class="clearfix">
+          <input type="checkbox" name="remember" id="remember" />
+          <label for="remember">Remember me</label>
+        </p>
+        <p class="clearfix">
+          <input type="submit" value="Login" />
+        </p>
+      </form>
+      ?
+      <!-- {% endblock %} -->
+    </div>
+  </body>
+</html>

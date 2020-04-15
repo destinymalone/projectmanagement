@@ -7,18 +7,15 @@
   <button>Create new list</button>
 </form>
 
-{% for board_list in lists %}
-<p style="background-color: hsl(249, 34%, 53%); padding: 1rem;">
-  <a href="{% url 'board_detail' list.id %}">{{ board_list.list_title }}</a>
-</p>
+{% for list in board.list_set.all %}
+  <p style="background-color: hsl(249, 34%, 53%); padding: 1rem;">
+    <a href="{% url 'list_detail' list.id %}">{{ list.title }}</a>
+  </p>
 
-
-{% for card in board_list.UserBoardList %}
-<p style="background-color: hsl(249, 34%, 53%); padding: 1rem;">
-  <a href="{% url 'list_detail' list_create.id %}">- {{ card.description }}</a>
-</p>
-{% endfor %} 
-
-{% endfor %} 
-
+  {% for card in list.card_set.all %}
+    <p style="background-color: hsl(249, 34%, 53%); padding: 1rem;">
+      <a href="{% url 'board_detail' card.id %}">- {{ card.description }}</a>
+    </p>
+  {% endfor %}
+{% endfor %}
 {% endblock %}

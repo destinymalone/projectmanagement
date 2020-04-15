@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+{% extends 'boards/board/board.html' %} 
+
+{% block content %}
+
+<h1>Project Board - {{ board.title }}</h1>
+
+<form method="POST">
+    {% csrf_token %} 
+    <p>Are you sure you want to delete this item from "{{ board.title }}"?</p> 
+    <input type="submit" value="Confirm">
+    <a href="/board">Cancel</a> 
+</form> 
+
+{% endblock %}

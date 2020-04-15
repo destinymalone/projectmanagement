@@ -4,7 +4,7 @@ from django import views
 from django.shortcuts import redirect, render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
-from polls.models import CreateBoard, UserBoardList, UserListCard
+from polls.models import Board, List, Card
 from polls.forms import CreateListForm, CreateCardForm, CreateBoardForm, BoardEditForm, ListEditForm, CardEditForm
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponseRedirect, request
@@ -13,10 +13,14 @@ from django.urls import reverse_lazy
 
 # Create your views here.
 
+# Register
+
 class RegistrationView(CreateView):
     form_class = UserCreationForm
     template_name = 'registration/register.html'
     success_url = reverse_lazy("board")
+
+# Board
 
 class CreateBoardView(LoginRequiredMixin, CreateView):
     form_class = CreateBoardForm
@@ -42,10 +46,10 @@ class BoardDetailView(LoginRequiredMixin, DetailView):
     pk_url_kwarg = "id"
 
     def get_queryset(self):
-        return self.request.user.createboard_set.all()
+        return self.request.user.board_set.all()
 
 class BoardEditView(LoginRequiredMixin, UpdateView):
-    model = CreateBoard
+    model = Board
     form_class = BoardEditForm
     pk_url_kwarg = "id"
     # template_name = "boards/board/edit.html"
@@ -53,9 +57,13 @@ class BoardEditView(LoginRequiredMixin, UpdateView):
 
 
 class BoardDeleteView(LoginRequiredMixin, DeleteView):
-    model = CreateBoard
+    model = Board
     pk_url_kwarg = "id"
+    template_name = "boards/board/delete.html"
     success_url = reverse_lazy("board")
+
+
+# List
 
 class BoardListView(LoginRequiredMixin, CreateView):
     form_class = CreateListForm
@@ -68,66 +76,96 @@ class BoardListView(LoginRequiredMixin, CreateView):
         print(context)
         context['list_create'] = CreateListForm()
         id = self.request.path_info.split('/')[-1] # SORRY THIS IS HACKY
-        context['board'] = self.request.user.createboard_set.get(id=id)
+        context['board'] = self.request.user.board_set.get(id=id)
         return context
+
+    def form_valid(self, form):
+        form.instance.board_id = self.kwargs['id']
+        return super().form_valid(form)
   
 
 
 class ListDetailView(LoginRequiredMixin, DetailView):
-    # form_class = CreateListForm
-    template_name = 'boards/board/detail.html'
-    context_object_name = 'list_detail'
+    template_name = "boards/board/detail.html"
+    context_object_name = 'list'
     pk_url_kwarg = "id"
 
     def get_queryset(self):
-        return self.request.user.userboardlist_set.all()
+        return request.list_set.all()
 
 
 
 class ListEditView(LoginRequiredMixin, UpdateView):
-    model = UserBoardList
+    model = List
+    fields = ["title"]
     form_class = ListEditForm
     pk_url_kwarg = "id"
     template_name = "boards/board/edit.html"
     success_url = reverse_lazy("board")
 
-
-class ListDeleteView(LoginRequiredMixin, DeleteView):
-    model = UserBoardList
-    pk_url_kwarg = "id"
-    success_url = reverse_lazy("board")
-
-class ListCardView(CreateView, LoginRequiredMixin):
-    form_class = CreateCardForm
-    template_name = "boards/board/list.html"
-    success_url = reverse_lazy("list_create")
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        print(context)
+        context['list_edit'] = EditListForm()
+        id = self.request.path_info.split('/')[-1] # SORRY THIS IS HACKY
+        context['board'] = self.request.user.board_set.get(id=id)
+        return context
 
     def form_valid(self, form):
-        form.instance.username = self.request.user
+        form.instance.board_id = self.kwargs['id']
         return super().form_valid(form)
 
 
+class ListDeleteView(LoginRequiredMixin, DeleteView):
+    model = List
+    pk_url_kwarg = "id"
+    success_url = reverse_lazy("board")
+
+
+
+# Card
+
+class ListCardView(CreateView, LoginRequiredMixin):
+    form_class = CreateCardForm
+    template_name = "boards/board/card.html"
+    success_url = reverse_lazy("list_detail")
+    pk_url_kwarg = "id"
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # context['list_create'] = CreateListForm()
-        # context['list_edit'] = ListEditForm()
+        print(context)
         context['card_create'] = CreateCardForm()
-        # context['card_edit'] = CardEditForm()
+        id = self.request.path_info.split('/')[-1] # SORRY THIS IS HACKY
+        context['list'] = request.list_set.get(id=id)
         return context
+
+    def form_valid(self, form):
+        form.instance.card_id = self.kwargs['id']
+        return super().form_valid(form)
+  
   
 
 class CardDetailView(ListView, LoginRequiredMixin):
     form_class = CreateCardForm
     template_name = "boards/board/detail.html"
-    context_object_name = 'card_detail'
+    context_object_name = 'card'
     pk_url_kwarg = "id"
 
-    def get_queryset(self):
-        return self.request.user.userboardlist_set.all()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        print(context)
+        context['card'] = CreateCardForm()
+        id = self.request.path_info.split('/')[-1] # SORRY THIS IS HACKY
+        context['list'] = request.list_set.get(id=id)
+        return context
+
+    def form_valid(self, form):
+        form.instance.board_id = self.kwargs['id']
+        return super().form_valid(form)
    
 
 class CardEditView(LoginRequiredMixin, UpdateView):
-    model = UserListCard
+    model = Card
     form_class = CardEditForm
     pk_url_kwarg = "id"
     # template_name = "boards/card/edit.html"
@@ -143,6 +181,6 @@ class CardEditView(LoginRequiredMixin, UpdateView):
 
 
 class CardDeleteView(LoginRequiredMixin, DeleteView):
-    model = UserListCard
+    model = Card
     pk_url_kwarg = "id"
     success_url = reverse_lazy("list_create")

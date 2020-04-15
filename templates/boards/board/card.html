@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+{% extends 'boards/board/detail.html' %} {% block content %}
+
+<h1>Project Board - {{ board.title }}</h1>
+<h2>Board List - {{ list_create.title }}</h2>
+<form action="" method="POST">
+  {% csrf_token %} {{ card_create.as_p }}
+  <button>Create new card</button>
+</form>
+
+{% for list in board.list_set.all %}
+<p style="background-color: hsl(249, 34%, 53%); padding: 1rem;">
+  <a href="{% url 'board_detail' list.id %}">{{ list.title }}</a>
+  <a href="{% url 'list_edit' %}">Edit</a>
+  <a href="{% url 'list_delete' %}">Delete</a>
+</p>
+
+{% for card in list.card_set.all %}
+<p style="background-color: hsl(249, 34%, 53%); padding: 1rem;">
+  <a href="{% url 'list_detail' card.id %}">- {{ card.description }}</a>
+  <a href="{% url 'card_edit' %}">Edit</a>
+  <a href="{% url 'card_delete' %}">Delete</a>
+</p>
+{% endfor %} {% endfor %} {% endblock %}
