@@ -20,7 +20,6 @@ from polls.views import (
 )
 
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("accounts/", include("django.contrib.auth.urls")),
@@ -33,7 +32,7 @@ urlpatterns = [
     path("list/detail/<id>/", ListDetailView.as_view(), name="list_detail"),
     path("list/edit/<id>/", ListEditView.as_view(), name="list_edit"),
     path("list/delete/<id>/", ListDeleteView.as_view(), name="list_delete"),
-    path("card/", ListCardView.as_view(), name="card_create"),
+    path("card/<id>", ListCardView.as_view(), name="card_create"),
     path("card/detail/<id>/", CardDetailView.as_view(), name="card_detail"),
     path("card/edit/<id>/", CardEditView.as_view(), name="card_edit"),
     path("card/delete/<id>/", CardDeleteView.as_view(), name="card_delete"),

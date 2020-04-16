@@ -12,19 +12,19 @@ class Board(models.Model):
     title = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"{self.title}"
+        return {self.title}
   
 class List(models.Model):
     board = models.ForeignKey(Board, on_delete=models.CASCADE, default=1) 
     title = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"{self.board} | {self.title}"
+        return {self.title}
 
 class Card(models.Model):
     list = models.ForeignKey(List, on_delete=models.CASCADE, default=1)
     description = models.TextField()
 
     def __str__(self):
-        return f"{self.description}"
+        return {self.description}
  

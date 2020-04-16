@@ -14,13 +14,14 @@
 
   <body>
     <div class="site-container">
-      <!-- {% block content %} -->
-      <!-- <form method="POST">
-      {% csrf_token %} {{ form }}
-      <button>Login</button>
-    </form> -->
+      {% block content %} -->
+      <form method="POST">
+        {% csrf_token %} {{ form }}
+        <button>Login</button>
+      </form>
+      {% endblock %}
 
-      <form class="form-3" method="POST">
+      <!-- <form class="form-3" method="POST">
         {% csrf_token %}
         <p class="clearfix">
           <label for="login">Username</label>
@@ -44,7 +45,7 @@
         </p>
       </form>
       ?
-      <!-- {% endblock %} -->
+      {% endblock %} -->
     </div>
   </body>
 </html>
