@@ -8,6 +8,7 @@ from polls.models import Board, List, Card
 from polls.forms import CreateListForm, CreateCardForm, CreateBoardForm, BoardEditForm, ListEditForm, CardEditForm
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponseRedirect, request
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 
 
@@ -62,12 +63,11 @@ class BoardDeleteView(LoginRequiredMixin, DeleteView):
 class BoardListView(LoginRequiredMixin, CreateView):
     form_class = CreateListForm
     template_name = "boards/board/list.html"
-    success_url = reverse_lazy("detail")
+    success_url = reverse_lazy("board")
     pk_url_kwarg = "id"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(context)
         context['list_create'] = CreateListForm()
         id = self.kwargs['id']
         context['board'] = self.request.user.board_set.get(id=id)
@@ -80,7 +80,7 @@ class BoardListView(LoginRequiredMixin, CreateView):
 
 
 class ListDetailView(LoginRequiredMixin, DetailView):
-    template_name = "boards/board/detail.html"
+    template_name = "boards/board/card.html"
     context_object_name = 'list'
     pk_url_kwarg = "id"
 
@@ -89,7 +89,6 @@ class ListDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print('Got context!', context)
         return context
 
 
@@ -97,15 +96,15 @@ class ListEditView(LoginRequiredMixin, UpdateView):
     model = List
     form_class = ListEditForm
     pk_url_kwarg = "id"
-    template_name = "boards/board/edit.html"
+    template_name = "boards/board/list_edit.html"
     success_url = reverse_lazy("board")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(context)
         context['list_edit'] = ListEditForm()
         id = self.kwargs['id']
-        context['board'] = self.request.user.board_set.get(id=id)
+        context['board'] = Board.objects.filter(pk=id)
+
         return context
 
     def form_valid(self, form):
@@ -116,7 +115,7 @@ class ListEditView(LoginRequiredMixin, UpdateView):
 class ListDeleteView(LoginRequiredMixin, DeleteView):
     model = List
     pk_url_kwarg = "id"
-    template_name = "boards/board/delete.html"
+    template_name = "boards/board/list_delete.html"
     success_url = reverse_lazy("board")
 
 
@@ -125,17 +124,16 @@ class ListDeleteView(LoginRequiredMixin, DeleteView):
 
 class ListCardView(CreateView, LoginRequiredMixin):
     form_class = CreateCardForm
-    template_name = "boards/board/list.html"
-    success_url = reverse_lazy("board_detail")
+    template_name = "boards/board/card.html"
+    success_url = reverse_lazy("board")
     pk_url_kwarg = "id"
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        print(context)
-        context['card_create'] = CreateCardForm()
         id = self.kwargs['id']
-        print(id)
-        context['list'] = self.request.user.board.list_set.get(id=id)
+        board = self.request.user.board_set.get(id=id)
+        context = super().get_context_data(**kwargs)
+        context['card_create'] =  CreateCardForm()
+        context['list'] = board.list_set.get(id=id)
         return context
 
     def form_valid(self, form):

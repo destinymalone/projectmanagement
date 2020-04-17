@@ -1,20 +1,29 @@
 <!DOCTYPE html>
 {% extends 'boards/board/board.html' %} {% block content %}
-<h1>List - {{ list.title }}</h1>
-<p style="background-color: hsl(249, 34%, 53%); padding: 1rem;">
-  Board: {{ list.board }}<br />
-  Title: {{ object.title }}
-</p>
 
-<form method="POST">
+<h1>Board Details</h1>
+<p style="background-color: hsl(249, 34%, 53%); padding: 1rem;">
+  Username: {{ board.username }}<br />
+  Board: {{ board.title }}
+</p>
+<br>
+<h2>Enter List Title:</h2>
+<form action="" method="POST">
   {% csrf_token %}
-  {{ card_create.as_p }}
-  <div class="form-group">
-    <a href="{% url 'card_create' list.id %}">Create new card</a>
-  </div>
+  {{ list_create.as_p }}
+  <input type="submit" value="Submit">
 </form>
+
+<h3>List:</h3>
+
+{% for list in board.list_set.all %}
+<p style="background-color: hsl(249, 34%, 53%); padding: 1rem;">
+  <a href="{% url 'list_detail' list.id %}">- {{ list.title }}</a>
+</p>
+{% endfor %}
+
 <br />
-<h2>Cards</h2>
+<h3>Cards</h3>
 {% for card in list.card_set.all %}
 <p style="background-color: hsl(249, 34%, 53%); padding: 1rem;">
   <a href="{% url 'board_detail' card.id %}">- {{ card.description }}</a>

@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-{% extends 'boards/board/detail.html' %} {% block content %}
+{% extends 'boards/board/board.html' %} {% block content %}
 
-<h1>Project Board - {{ board.title }}</h1>
-<h2>Board List - {{ list_create.title }}</h2>
+<h1>List - {{ list.title }}</h1>
+<br>
 <form action="" method="POST">
-  {% csrf_token %} {{ card_create.as_p }}
-  <button>Create new card</button>
+  {% csrf_token %}
+  {{ card_create.as_p }}
+  <input type="submit" value="Submit">
 </form>
 
 {% for list in board.list_set.all %}

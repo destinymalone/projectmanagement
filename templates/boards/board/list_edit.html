@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 {% extends 'boards/board/board.html' %} {% block content %}
 
-<h1>Project Board - {{ board.title }}</h1>
+<h1>List - {{ list.title }}</h1>
 <form method="POST">
-  {% csrf_token %} {{ form.as_p }}
+  {% csrf_token %} {{ list_edit.as_p }}
   <input type="submit" value="Edit" />
-  <a href="/board">Cancel</a>
+  <a href="/">Cancel</a>
   <!-- <button>Edit list</button> -->
 </form>
+{% endblock %}
 <!-- 
 {% for list in user.list_set.all %}
 <p style="background-color: hsl(249, 34%, 53%); padding: 1rem;">
