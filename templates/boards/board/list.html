@@ -1,6 +1,5 @@
-<!DOCTYPE html>
+<!DOCTYPE html> {% extends 'boards/board/board.html' %} {% block content %}
 <!-- {% load static %} -->
-{% extends 'boards/board/board.html' %} {% block content %}
 <!-- <script src="{% static 'boards/js/sortable.js' %}"></script> -->
 <!-- <link rel="stylesheet" href="css/sortable.css" /> -->
 
@@ -14,6 +13,7 @@
 <form action="" method="POST">
   {% csrf_token %} {{ list_create.as_p }}
   <input type="submit" value="Submit" />
+  <a href="/">Cancel</a>
 </form>
 
 <h3>List:</h3>

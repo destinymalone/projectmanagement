@@ -117,7 +117,15 @@ class ListDeleteView(LoginRequiredMixin, DeleteView):
     model = List
     pk_url_kwarg = "id"
     template_name = "boards/board/list_delete.html"
+    context_object_name = 'list'
     success_url = reverse_lazy("board")
+
+    def get_queryset(self):
+        return List.objects.filter(board__username=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 
 

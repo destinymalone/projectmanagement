@@ -15,7 +15,7 @@ class Board(models.Model):
         return {self.title}
   
 class List(models.Model):
-    board = models.ForeignKey(Board, on_delete=models.CASCADE, default=1) 
+    board = models.ForeignKey(Board, on_delete=models.PROTECT, default=1) 
     title = models.CharField(max_length=100)
 
     def __str__(self):

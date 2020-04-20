@@ -1,33 +1,86 @@
 <!DOCTYPE html>
-{% load static %}
+{% extends 'boards/board/board.html' %} {% block content %} {% load static %}
 <!-- <script src="{% static 'boards/js/sortable.js' %}"></script>
 <link rel="stylesheet" type="text/css" href="css/sortable.css"> -->
-{% extends 'boards/board/board.html' %} {% block content %}
-
 <h1>Project Board - {{ board.title }}</h1>
 
 <form method="POST">
   {% csrf_token %} {{ form.as_p }}
   <div class="form-group">
     <a href="{% url 'list_create' board.id %}">Create new list</a>
+    <a href="/">Back to Personal Boards</a>
   </div>
 </form>
 
 <h3>Lists</h3>
-{% for list in board.list_set.all %}
-<p style="background-color: hsl(249, 34%, 53%); padding: 1rem;">
-  <a href="{% url 'list_detail' list.id %}">{{ list.title }}</a>
-  <a href="{% url 'list_edit' list.id %}">Edit</a>
-  <a href="{% url 'list_delete' list.id %}">Delete</a>
-</p>
-{% endfor %}
-<br />
-<h3>Cards</h3>
+<ul style="display: inline-block; margin-left: -2.5rem;">
+  {% for list in board.list_set.all %}
+  <p
+    style="
+      background-color: hsl(249, 34%, 53%);
+      padding: 1rem;
+      width: max-content;
+      display: inline-block;
+    "
+  >
+    <a
+      href="{% url 'list_detail' list.id %}"
+      style="
+        font-weight: bolder;
+        font-size: x-large;
+        text-align: center;
+        text-decoration: none;
+        color: black;
+        width: max-content;
+        margin-right: 0.5em;
+      "
+      >{{ list.title }}</a
+    >
+    <a
+      href="{% url 'list_edit' list.id %}"
+      style="
+        position: relative;
+        text-decoration: none;
+        margin-top: 0.5em;
+        margin-left: 0.5em;
+        float: right;
+        width: max-content;
+        background: cadetblue;
+        text-align: center;
+        border-radius: 2em;
+        color: white;
+        font-weight: bold;
+      "
+      >Edit</a
+    >
+    <a
+      href="{% url 'list_delete' list.id %}"
+      style="
+        position: relative;
+        text-decoration: none;
+        margin-top: 0.5em;
+        float: right;
+        width: max-content;
+        background: rgb(221, 23, 23);
+        text-align: center;
+        border-radius: 5em;
+        color: white;
+        font-weight: bold;
+      "
+      >Delete</a
+    >
+  </p>
+  {% endfor %}
+</ul>
 
-{% for card in list.card_set.all %}
-<p style="background-color: hsl(249, 34%, 53%); padding: 1rem;">
-  <a href="{% url 'board_detail' card.id %}">- {{ card.description }}</a>
-  <a href="{% url 'card_edit' card.id %}">Edit</a>
-  <a href="{% url 'card_delete' card.id %}">Delete</a>
-</p>
-{% endfor %} {% endblock %}
+<h3>Cards</h3>
+<ul style="display: inline-table; float: left; clear: left;">
+  {% for list in board.list_set.all %} {% for card in list.card_set.all %}
+  <p style="background-color: hsl(249, 34%, 53%); padding: 1rem; width: 3rem;">
+    <a href="{% url 'board_detail' card.id %}">- {{ card.description }}</a>
+    <a href="{% url 'card_edit' card.id %}">Edit</a>
+    <a href="{% url 'card_delete' card.id %}">Delete</a>
+  </p>
+  {% endfor %} {% endfor %}
+</ul>
+{% endblock %}

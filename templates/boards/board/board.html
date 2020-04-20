@@ -6,6 +6,7 @@
 <form method="POST">
   {% csrf_token %} {{ form.as_p }}
   <button>Create new board</button>
+  <a href="/">Cancel</a>
 </form>
 
 {% for board in user.board_set.all %}
