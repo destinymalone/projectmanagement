@@ -9,17 +9,12 @@
   <input type="submit" value="Submit">
 </form>
 
-{% for list in board.list_set.all %}
-<p style="background-color: hsl(249, 34%, 53%); padding: 1rem;">
-  <a href="{% url 'board_detail' list.id %}">{{ list.title }}</a>
-  <a href="{% url 'list_edit' list.id %}">Edit</a>
-  <a href="{% url 'list_delete' list.id %}">Delete</a>
-</p>
-
+<h2>{{ list.title }} Cards: </h2>
 {% for card in list.card_set.all %}
 <p style="background-color: hsl(249, 34%, 53%); padding: 1rem;">
   <a href="{% url 'list_detail' card.id %}">- {{ card.description }}</a>
   <a href="{% url 'card_edit' card.id %}">Edit</a>
   <a href="{% url 'card_delete' card.id %}">Delete</a>
 </p>
-{% endfor %} {% endfor %} {% endblock %}
+{% endfor %}
+{% endblock %}

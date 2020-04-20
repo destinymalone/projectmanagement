@@ -14,7 +14,7 @@ from polls.views import (
     ListDeleteView, 
     ListCardView, 
     ListDetailView,
-    CardDetailView, 
+    # CardDetailView, 
     CardEditView,
     CardDeleteView,
 )
@@ -33,7 +33,7 @@ urlpatterns = [
     path("list/edit/<id>/", ListEditView.as_view(), name="list_edit"),
     path("list/delete/<id>/", ListDeleteView.as_view(), name="list_delete"),
     path("card/<id>", ListCardView.as_view(), name="card_create"),
-    path("card/detail/<id>/", CardDetailView.as_view(), name="card_detail"),
+    # path("card/detail/<id>/", CardDetailView.as_view(), name="card_detail"),
     path("card/edit/<id>/", CardEditView.as_view(), name="card_edit"),
     path("card/delete/<id>/", CardDeleteView.as_view(), name="card_delete"),
     # path('polls/', include('polls.urls')),

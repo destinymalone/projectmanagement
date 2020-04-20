@@ -10,6 +10,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponseRedirect, request
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
+from django.views.decorators.http import require_GET, require_POST
 
 
 # Create your views here.
@@ -122,7 +123,7 @@ class ListDeleteView(LoginRequiredMixin, DeleteView):
 
 # Card
 
-class ListCardView(CreateView, LoginRequiredMixin):
+class ListCardView(LoginRequiredMixin, CreateView):
     form_class = CreateCardForm
     template_name = "boards/board/card.html"
     success_url = reverse_lazy("board")
@@ -137,26 +138,17 @@ class ListCardView(CreateView, LoginRequiredMixin):
         return context
 
     def form_valid(self, form):
-        form.instance.card_id = self.kwargs['id']
+        form.instance.list_id = self.kwargs['id']
         return super().form_valid(form)
   
-  
 
-class CardDetailView(ListView, LoginRequiredMixin):
-    form_class = CreateCardForm
-    template_name = "boards/board/detail.html"
-    context_object_name = 'card'
-    pk_url_kwarg = "id"
-
-    def get_queryset(self):
-        return list.card_set.all()
 
 class CardEditView(LoginRequiredMixin, UpdateView):
     model = Card
     form_class = CardEditForm
     pk_url_kwarg = "id"
-    # template_name = "boards/card/edit.html"
-    success_url = reverse_lazy("card_create")
+    template_name = "boards/card/card_edit.html"
+    success_url = reverse_lazy("board")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -170,5 +162,11 @@ class CardEditView(LoginRequiredMixin, UpdateView):
 class CardDeleteView(LoginRequiredMixin, DeleteView):
     model = Card
     pk_url_kwarg = "id"
-    template_name = "boards/board/delete.html"
-    success_url = reverse_lazy("list_create")
+    template_name = "boards/board/card_delete.html"
+    success_url = reverse_lazy("board")
+
+
+
+# Ordering Lists/Cards
+
+

@@ -6,12 +6,6 @@
   {% csrf_token %} {{ list_edit.as_p }}
   <input type="submit" value="Edit" />
   <a href="/">Cancel</a>
-  <!-- <button>Edit list</button> -->
 </form>
 {% endblock %}
-<!-- 
-{% for list in user.list_set.all %}
-<p style="background-color: hsl(249, 34%, 53%); padding: 1rem;">
-  <a href="{% url 'list_detail' list.id %}">{{ list.title }}</a>
-</p>
-{% endfor %} -->
+

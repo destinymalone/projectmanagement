@@ -1,31 +1,36 @@
 <!DOCTYPE html>
+<!-- {% load static %} -->
 {% extends 'boards/board/board.html' %} {% block content %}
+<!-- <script src="{% static 'boards/js/sortable.js' %}"></script> -->
+<!-- <link rel="stylesheet" href="css/sortable.css" /> -->
 
 <h1>Board Details</h1>
 <p style="background-color: hsl(249, 34%, 53%); padding: 1rem;">
   Username: {{ board.username }}<br />
   Board: {{ board.title }}
 </p>
-<br>
+<br />
 <h2>Enter List Title:</h2>
 <form action="" method="POST">
-  {% csrf_token %}
-  {{ list_create.as_p }}
-  <input type="submit" value="Submit">
+  {% csrf_token %} {{ list_create.as_p }}
+  <input type="submit" value="Submit" />
 </form>
 
 <h3>List:</h3>
-
-{% for list in board.list_set.all %}
-<p style="background-color: hsl(249, 34%, 53%); padding: 1rem;">
-  <a href="{% url 'list_detail' list.id %}">- {{ list.title }}</a>
-</p>
-{% endfor %}
-
+<table id="list-groups">
+  {% for list in board.list_set.all %}
+  <p style="background-color: hsl(249, 34%, 53%); padding: 1rem;">
+    <a href="{% url 'list_detail' list.id %}">- {{ list.title }}</a>
+  </p>
+  {% endfor %}
+</table>
 <br />
 <h3>Cards</h3>
-{% for card in list.card_set.all %}
-<p style="background-color: hsl(249, 34%, 53%); padding: 1rem;">
-  <a href="{% url 'board_detail' card.id %}">- {{ card.description }}</a>
-</p>
-{% endfor %} {% endblock %}
+<table id="card-groups">
+  {% for card in list.card_set.all %}
+  <p style="background-color: hsl(249, 34%, 53%); padding: 1rem;">
+    <a href="{% url 'board_detail' card.id %}">- {{ card.description }}</a>
+  </p>
+  {% endfor %}
+</table>
+{% endblock %}
