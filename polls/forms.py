@@ -25,9 +25,9 @@ class ListEditForm(forms.ModelForm):
     class Meta:
         model = List
         fields = ["title"]
-        widgets = {"title": forms.Textarea()}
+        widgets = {"title": forms.TextInput()}
 
-class CreateCardForm(forms.Form):
+class CreateCardForm(forms.ModelForm):
     class Meta:
         model = Card
         fields = ['description']

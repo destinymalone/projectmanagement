@@ -61,7 +61,7 @@ class BoardDeleteView(LoginRequiredMixin, DeleteView):
 
 # List
 
-class BoardListView(LoginRequiredMixin, CreateView):
+class CreateListView(LoginRequiredMixin, CreateView):
     form_class = CreateListForm
     template_name = "boards/board/list.html"
     success_url = reverse_lazy("board")
@@ -81,7 +81,7 @@ class BoardListView(LoginRequiredMixin, CreateView):
 
 
 class ListDetailView(LoginRequiredMixin, DetailView):
-    template_name = "boards/board/card.html"
+    template_name = "boards/board/list_detail.html"
     context_object_name = 'list'
     pk_url_kwarg = "id"
 
@@ -127,22 +127,23 @@ class ListDeleteView(LoginRequiredMixin, DeleteView):
 
 # Card
 
-class ListCardView(LoginRequiredMixin, CreateView):
+class CreateCardView(LoginRequiredMixin, CreateView):
     form_class = CreateCardForm
     template_name = "boards/board/card.html"
     success_url = reverse_lazy("board")
+    context_object_name = 'card'
     pk_url_kwarg = "id"
 
     def get_context_data(self, **kwargs):
-        id = self.kwargs['id']
-        board = self.request.user.board_set.get(id=id)
         context = super().get_context_data(**kwargs)
-        context['card_create'] =  CreateCardForm()
-        context['list'] = board.list_set.get(id=id)
+        context['card_create'] = CreateCardForm()
+        id = self.kwargs['id']
+        context['list'] = List.objects.filter(pk=id)
+
         return context
 
     def form_valid(self, form):
-        form.instance.list_id = self.kwargs['id']
+        form.instance.card_id = Card.objects.filter(list__board=board.list_set.all)
         return super().form_valid(form)
   
 
@@ -156,9 +157,6 @@ class CardEditView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # context['list_create'] = CreateListForm()
-        # context['list_edit'] = ListEditForm()
-        # context['card_create'] = CreateCardForm()
         context['card_edit'] = CardEditForm()
         return context
 
@@ -168,6 +166,13 @@ class CardDeleteView(LoginRequiredMixin, DeleteView):
     pk_url_kwarg = "id"
     template_name = "boards/board/card_delete.html"
     success_url = reverse_lazy("board")
+
+    def get_queryset(self):
+        return List.objects.filter(board__username=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 
 

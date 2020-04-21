@@ -22,7 +22,7 @@ class List(models.Model):
 
 class Card(models.Model):
     list = models.ForeignKey(List, on_delete=models.CASCADE)
-    description = models.TextField(max_length=160)
+    description = models.CharField(max_length=160)
 
     def __str__(self):
         return {self.description}

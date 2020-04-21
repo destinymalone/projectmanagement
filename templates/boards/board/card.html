@@ -1,21 +1,17 @@
-<!DOCTYPE html>
-{% extends 'boards/board/board.html' %} {% block content %}
-
-<h1>List - {{ list.title }}</h1>
-<br>
-<form action="" method="POST">
-  {% csrf_token %}
-  {{ card_create.as_p }}
-  <input type="submit" value="Submit">
-  <a href="/">Cancel</a>
-</form>
-
-<h2>{{ list.title }} Cards: </h2>
-{% for card in list.card_set.all %}
-<p style="background-color: hsl(249, 34%, 53%); padding: 1rem;">
-  <a href="{% url 'list_detail' card.id %}">- {{ card.description }}</a>
-  <a href="{% url 'card_edit' card.id %}">Edit</a>
-  <a href="{% url 'card_delete' card.id %}">Delete</a>
-</p>
-{% endfor %}
+<!DOCTYPE html> {% extends 'boards/board/board.html' %} {% block content %}
+<html>
+  <head>
+    <title>Card</title>
+  </head>
+  <body>
+    <h1>Create Card for {{ list.title }}</h1>
+    <div class="enter">
+      <h2>Enter Card Description:</h2>
+      <form class="create" action="" method="POST">
+        {% csrf_token %} {{ card_create.as_p }}
+        <input type="submit" value="Submit" /> <a href="/">Cancel</a>
+      </form>
+    </div>
+  </body>
+</html>
 {% endblock %}
