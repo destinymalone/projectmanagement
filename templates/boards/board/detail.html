@@ -2,85 +2,190 @@
 {% extends 'boards/board/board.html' %} {% block content %} {% load static %}
 <!-- <script src="{% static 'boards/js/sortable.js' %}"></script>
 <link rel="stylesheet" type="text/css" href="css/sortable.css"> -->
-<h1>Project Board - {{ board.title }}</h1>
 
-<form method="POST">
-  {% csrf_token %} {{ form.as_p }}
-  <div class="form-group">
-    <a href="{% url 'list_create' board.id %}">Create new list</a>
-    <a href="/">Back to Personal Boards</a>
-  </div>
-</form>
+<html>
+  <head>
+    <title>Board Detail</title>
+    <style>
+      body {
+        background-color: rgb(0, 102, 255);
+      }
 
-<h3>Lists</h3>
-<ul style="display: inline-block; margin-left: -2.5rem;">
-  {% for list in board.list_set.all %}
-  <p
-    style="
-      background-color: hsl(249, 34%, 53%);
-      padding: 1rem;
-      width: max-content;
-      display: inline-block;
-    "
-  >
-    <a
-      href="{% url 'list_detail' list.id %}"
-      style="
+      h1 {
+        display: block;
+        font-style: normal;
+        margin-bottom: 1em;
+      }
+
+      h3 {
+        display: block;
         font-weight: bolder;
         font-size: x-large;
-        text-align: center;
-        text-decoration: none;
-        color: black;
-        width: max-content;
-        margin-right: 0.5em;
-      "
-      >{{ list.title }}</a
-    >
-    <a
-      href="{% url 'list_edit' list.id %}"
-      style="
-        position: relative;
-        text-decoration: none;
-        margin-top: 0.5em;
-        margin-left: 0.5em;
-        float: right;
-        width: max-content;
-        background: cadetblue;
-        text-align: center;
-        border-radius: 2em;
+        font-style: normal;
+        margin-top: 3rem;
+        margin-bottom: -1rem;
+      }
+      a {
+        background-color: #f31e1e;
+        border: none;
+        border-radius: 10px;
         color: white;
-        font-weight: bold;
-      "
-      >Edit</a
-    >
-    <a
-      href="{% url 'list_delete' list.id %}"
-      style="
-        position: relative;
-        text-decoration: none;
-        margin-top: 0.5em;
-        float: right;
-        width: max-content;
-        background: rgb(221, 23, 23);
+        padding: 12px 30px;
+        font-size: 1rem;
         text-align: center;
-        border-radius: 5em;
-        color: white;
-        font-weight: bold;
-      "
-      >Delete</a
-    >
-  </p>
-  {% endfor %}
-</ul>
+        text-decoration: none;
+        text-shadow: 1px 1px 1px #000;
+        background-image: linear-gradient(
+          to top left,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0.2) 30%,
+          rgba(0, 0, 0, 0)
+        );
+        box-shadow: inset 2px 2px 3px rgba(255, 255, 255, 0.6),
+          inset -2px -2px 3px rgba(0, 0, 0, 0.6);
+      }
 
-<h3>Cards</h3>
-<ul style="display: inline-table; float: left; clear: left;">
-  {% for list in board.list_set.all %} {% for card in list.card_set.all %}
-  <p style="background-color: hsl(249, 34%, 53%); padding: 1rem; width: 3rem;">
-    <a href="{% url 'board_detail' card.id %}">- {{ card.description }}</a>
-    <a href="{% url 'card_edit' card.id %}">Edit</a>
-    <a href="{% url 'card_delete' card.id %}">Delete</a>
-  </p>
-  {% endfor %} {% endfor %}
-</ul>
-{% endblock %}
+      a:hover {
+        background-color: #d30909;
+        cursor: pointer;
+      }
+
+      a:active {
+        box-shadow: inset -2px -2px 3px rgba(255, 255, 255, 0.6),
+          inset 2px 2px 3px rgba(0, 0, 0, 0.6);
+      }
+      .title {
+        display: inline-block;
+        background-color: palevioletred;
+      }
+
+      .title:hover {
+        background-color: #e20988;
+        cursor: pointer;
+      }
+
+      .title:active {
+        box-shadow: inset -2px -2px 3px rgba(255, 255, 255, 0.6),
+          inset 2px 2px 3px rgba(0, 0, 0, 0.6);
+      }
+    </style>
+    <body>
+      <h1>Project Board - {{ board.title }}</h1>
+
+      <form method="POST">
+        {% csrf_token %} {{ form.as_p }}
+        <div class="form-group">
+          <a href="{% url 'list_create' board.id %}">Create new list</a>
+          <a href="/">Back to Personal Boards</a>
+        </div>
+      </form>
+
+      <h3>Lists</h3>
+      <ul
+        class="card mb-3"
+        style="
+          display: inline-block;
+          margin: auto;
+          width: 90vw;
+          max-width: 100rem;
+        "
+      >
+        {% for list in board.list_set.all %}
+        <p
+          style="
+            background-color: hsl(249, 34%, 53%);
+            padding: 1rem;
+            text-align: center;
+            position: center;
+            margin-left: auto;
+            margin-right: auto;
+            width: max-content;
+            height: auto;
+            display: inline-block;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: auto;
+          "
+        >
+          <a
+            href="{% url 'list_detail' list.id %}"
+            class="title"
+            style="
+              font-weight: bolder;
+              font-size: larger;
+              text-align: center;
+              margin-top: 0.5rem;
+              text-decoration: none;
+              color: black;
+              width: 50px;
+              margin-right: 0.5em;
+              height: 1.3rem;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              overflow: hidden;
+            "
+            >{{ list.title }}</a
+          >
+          <a
+            href="{% url 'list_edit' list.id %}"
+            style="
+              position: relative;
+              text-decoration: none;
+              margin-top: 0.5em;
+              margin-left: 0.5em;
+              float: right;
+              width: max-content;
+              background: cadetblue;
+              text-align: center;
+              border-radius: 10px;
+              color: white;
+              font-weight: bold;
+            "
+            >Edit</a
+          >
+          <a
+            href="{% url 'list_delete' list.id %}"
+            style="
+              position: relative;
+              text-decoration: none;
+              margin-top: 0.5em;
+              float: right;
+              width: max-content;
+              background: rgb(221, 23, 23);
+              text-align: center;
+              border-radius: 10px;
+              color: white;
+              font-weight: bold;
+              /* text-align: center;
+              position: center;
+              margin-left: auto;
+              margin-right: auto; */
+            "
+            >Delete</a
+          >
+        </p>
+        {% endfor %}
+      </ul>
+
+      <h3>Cards</h3>
+      <ul style="display: inline-table; float: left; clear: left;">
+        {% for list in board.list_set.all %} {% for card in list.card_set.all %}
+        <p
+          style="
+            background-color: hsl(249, 34%, 53%);
+            padding: 1rem;
+            width: 3rem;
+          "
+        >
+          <a href="{% url 'board_detail' card.id %}"
+            >- {{ card.description }}</a
+          >
+          <a href="{% url 'card_edit' card.id %}">Edit</a>
+          <a href="{% url 'card_delete' card.id %}">Delete</a>
+        </p>
+        {% endfor %} {% endfor %}
+      </ul>
+      {% endblock %}
+    </body>
+  </head>
+</html>

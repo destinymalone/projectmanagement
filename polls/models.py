@@ -9,21 +9,21 @@ from django.db.models import CASCADE, PROTECT
 
 class Board(models.Model):
     username = models.ForeignKey(User, on_delete=models.PROTECT)
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=65)
 
     def __str__(self):
         return {self.title}
   
 class List(models.Model):
     board = models.ForeignKey(Board, on_delete=models.PROTECT, default=1) 
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=65)
 
     def __str__(self):
         return {self.title}
 
 class Card(models.Model):
     list = models.ForeignKey(List, on_delete=models.CASCADE, default=1)
-    description = models.TextField()
+    description = models.TextField(max_length=160)
 
     def __str__(self):
         return {self.description}
