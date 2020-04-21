@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models import CASCADE, PROTECT
 
 # Create your models here.
 
@@ -15,14 +14,14 @@ class Board(models.Model):
         return {self.title}
   
 class List(models.Model):
-    board = models.ForeignKey(Board, on_delete=models.PROTECT, default=1) 
+    board = models.ForeignKey(Board, on_delete=models.CASCADE) 
     title = models.CharField(max_length=65)
 
     def __str__(self):
         return {self.title}
 
 class Card(models.Model):
-    list = models.ForeignKey(List, on_delete=models.CASCADE, default=1)
+    list = models.ForeignKey(List, on_delete=models.CASCADE)
     description = models.TextField(max_length=160)
 
     def __str__(self):

@@ -108,10 +108,6 @@ class ListEditView(LoginRequiredMixin, UpdateView):
 
         return context
 
-    def form_valid(self, form):
-        form.instance.board_id = self.kwargs['id']
-        return super().form_valid(form)
-
 
 class ListDeleteView(LoginRequiredMixin, DeleteView):
     model = List
