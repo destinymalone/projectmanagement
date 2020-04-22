@@ -1,11 +1,184 @@
 <!DOCTYPE html>
 {% extends 'boards/board/board.html' %} {% block content %}
 
-<h1>List - {{ list.title }}</h1>
-<form method="POST">
-  {% csrf_token %} {{ list_edit.as_p }}
-  <input type="submit" value="Edit" />
-  <a href="/">Cancel</a>
-</form>
-{% endblock %}
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
 
+    <style>
+      body {
+        background-color: rgb(0, 102, 255);
+      }
+
+      h1 {
+        display: block;
+        font-style: normal;
+        margin-bottom: -1rem;
+      }
+
+      .enter {
+        margin-top: 10rem;
+        position: relative;
+        justify-content: center;
+        text-align: center;
+      }
+      .form {
+        margin-top: 2rem;
+        height: 600px;
+      }
+      a {
+        background-color: #f31e1e;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        padding: 12px 30px;
+        font-size: 1rem;
+        text-align: center;
+        text-decoration: none;
+        text-shadow: 1px 1px 1px #000;
+        background-image: linear-gradient(
+          to top left,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0.2) 30%,
+          rgba(0, 0, 0, 0)
+        );
+        box-shadow: inset 2px 2px 3px rgba(255, 255, 255, 0.6),
+          inset -2px -2px 3px rgba(0, 0, 0, 0.6);
+      }
+
+      a:hover {
+        background-color: #d30909;
+        cursor: pointer;
+      }
+
+      a:active {
+        box-shadow: inset -2px -2px 3px rgba(255, 255, 255, 0.6),
+          inset 2px 2px 3px rgba(0, 0, 0, 0.6);
+      }
+      .create {
+        background-color: #1ef330;
+        min-height: 100%;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        padding: 12px 30px;
+        font-size: 1rem;
+        text-align: center;
+        text-decoration: none;
+        text-shadow: 1px 1px 1px #000;
+        background-image: linear-gradient(
+          to top left,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0.2) 30%,
+          rgba(0, 0, 0, 0)
+        );
+        box-shadow: inset 2px 2px 3px rgba(255, 255, 255, 0.6),
+          inset -2px -2px 3px rgba(0, 0, 0, 0.6);
+      }
+
+      .create:hover {
+        background-color: #4eeb10;
+        cursor: pointer;
+      }
+
+      .create:active {
+        box-shadow: inset -2px -2px 3px rgba(255, 255, 255, 0.6),
+          inset 2px 2px 3px rgba(0, 0, 0, 0.6);
+      }
+      .title {
+        display: block;
+        background-color: rgb(112, 178, 216);
+        font-size: larger;
+        width: 115px;
+        margin-left: -0.5rem;
+        text-align: center;
+        margin-top: -1rem;
+        margin-left: -1rem;
+        float: left;
+      }
+
+      .title:hover {
+        background-color: #09c9e2;
+        cursor: pointer;
+      }
+
+      .title:active {
+        box-shadow: inset -2px -2px 3px rgba(255, 255, 255, 0.6),
+          inset 2px 2px 3px rgba(0, 0, 0, 0.6);
+      }
+      .delete {
+        float: right;
+        margin-top: -3.5rem;
+        margin-right: -1rem;
+        width: 2px;
+        margin-top: -2.8rem;
+        margin-right: -1rem;
+        text-align: center;
+      }
+
+      input {
+        width: 200px;
+        height: 100px;
+        background-color: aliceblue;
+      }
+
+      .sub {
+        top: -55px;
+        right: 5;
+        left: 30%;
+        height: 45px;
+        width: 110px;
+      }
+      .form {
+        height: 100%;
+      }
+      .field {
+        position: relative;
+        justify-content: center;
+        text-align: center;
+      }
+    </style>
+    <title>Edit List</title>
+  </head>
+  <body>
+    <h1>List - {{ list.title }}</h1>
+    <h2 class="enter">Enter New List Title:</h2>
+    <div class="form" onclick="return false;" style="height: 60rem;">
+      <form class="field" method="POST">
+        {% csrf_token %} {{ list_edit.as_p }}
+        <input class="sub create" type="submit" value="Edit" />
+        <a href="/">Cancel</a>
+      </form>
+    </div>
+  </body>
+</html>
+{% endblock %}

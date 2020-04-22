@@ -23,6 +23,7 @@ class CreateListForm(forms.ModelForm):
 
 
 class ListEditForm(forms.ModelForm):
+    title = forms.CharField(widget=forms.TextInput, label='')
     class Meta:
         model = List
         fields = ["title"]
