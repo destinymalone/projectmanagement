@@ -1,26 +1,58 @@
 <!DOCTYPE html> {% extends 'boards/board/board.html' %} {% block content %}
-<!-- {% load static %} -->
-<!-- <script src="{% static 'boards/js/sortable.js' %}"></script> -->
-<!-- <link rel="stylesheet" href="css/sortable.css" /> -->
 
 <html>
   <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
     <title>List Details</title>
     <style>
       body {
         background-color: rgb(0, 102, 255);
       }
-      /*
-            h1 {
-              display: block;
-              font-style: normal;
-              margin-bottom: 1em;
-            }
 
-            h2 {
-              text-align: center;
-              margin-top: -2rem; */
-      /* } */
+      h1 {
+        display: block;
+        font-style: normal;
+        font-size: 60px;
+        margin-bottom: 0.5em;
+        margin-left: -2rem;
+        left: -1px;
+      }
+
+      h2 {
+        display: block;
+        font-style: normal;
+        margin-bottom: 1em;
+        margin-top: 0;
+      }
 
       input[type="submit"] {
         border: 0;
@@ -74,71 +106,146 @@
       a:hover {
         background-color: #d30909;
         cursor: pointer;
+        text-decoration: none;
       }
 
       a:active {
         box-shadow: inset -2px -2px 3px rgba(255, 255, 255, 0.6),
           inset 2px 2px 3px rgba(0, 0, 0, 0.6);
       }
-      .details {
-        display: inline;
+      .title {
+        display: inline-block;
+        background-color: rgb(235, 138, 27);
       }
-      .enter {
-        display: inline;
+
+      .title:hover {
+        background-color: #e2de09;
+        cursor: pointer;
+        pointer-events: none;
       }
-      .lists {
-        display: block;
+
+      .title:active {
+        box-shadow: inset -2px -2px 3px rgba(255, 255, 255, 0.6),
+          inset 2px 2px 3px rgba(0, 0, 0, 0.6);
       }
-      .cards {
-        display: block;
-        float: right;
+      .detail {
+        top: 0px;
+        right: 0px;
+        position: absolute;
+      }
+      .sub {
+        position: relative;
+        top: -55px;
+        right: 5;
+        left: 30%;
+        height: 45px;
+        width: 110px;
+      }
+      .can {
+        position: relative;
+        top: -90px;
+        left: 48%;
+        width: 110px;
+      }
+      .create {
+        position: relative;
+        max-width: 700px;
+      }
+      .left {
+        position: relative;
+        top: 65px;
+        right: 55%;
+        left: 0%;
+      }
+      .right {
+        position: relative;
+        top: 0px;
+        right: 40;
+        left: 35%;
+        /* right: -10%; */
       }
     </style>
   </head>
   <body>
-    <div class="details">
+    <div class="container">
       <h1>Board Details</h1>
-      <p style="padding: 1rem;">
-        Username: {{ board.username }}<br />
-        Board: {{ board.title }}
-      </p>
+      <div class="detail">
+        <p style="padding: 1rem;">
+          Username: {{ board.username }}<br />
+          Board: {{ board.title }}
+        </p>
+      </div>
+      <br />
+      <h2 class="left">Enter List Title:</h2>
+      <div class="create">
+        <form class="create" action="" method="POST">
+          {% csrf_token %}
+          <div class="right">
+            {{ list_create.as_p }}
+            <div class="buttons">
+              <input class="sub" type="submit" value="Submit" />
+            </div>
+            <a class="can" href="/">Cancel</a>
+          </div>
+        </form>
+      </div>
+      <br />
+      <div>
+        <h3>List:</h3>
+        {% for list in board.list_set.all %}
+        <p
+          class="lists"
+          style="
+            padding: 1rem;
+            text-align: center;
+            position: center;
+            margin-left: auto;
+            margin-right: auto;
+            width: max-content;
+            height: auto;
+            display: inline-block;
+          "
+        >
+          <a
+            class="title"
+            style="
+              font-weight: bolder;
+              font-size: larger;
+              text-align: center;
+              margin-top: 0.5rem;
+              text-decoration: none;
+              color: black;
+              width: 200px;
+              margin-right: 0.5em;
+              height: 3rem;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              overflow: hidden;
+            "
+            href="{% url 'board_detail' board.id %}"
+            >{{ list.title }}</a
+          >
+        </p>
+        {% endfor %}
+        <br />
+      </div>
+      <!-- <br />
+        <h3>Cards</h3>
+        {% for card in list.card_set.all %}
+        <p
+          class="cards"
+          style="
+            background-color: hsl(249, 34%, 53%);
+            padding: 1rem;
+            max-width: 10rem;
+          "
+        >
+          <a href="{% url 'board_detail' card.id %}"
+            >- {{ card.description }}</a
+          >
+        </p>
+        {% endfor %} -->
+      {% endblock %}
     </div>
-    <br />
-    <div class="enter">
-      <h2>Enter List Title:</h2>
-      <form class="create" action="" method="POST">
-        {% csrf_token %} {{ list_create.as_p }}
-        <input type="submit" value="Submit" /> <a href="/">Cancel</a>
-      </form>
-    </div>
-    <br />
-    <h3>List:</h3>
-    <div>
-      {% for list in board.list_set.all %}
-      <p
-        class="lists"
-        style="
-          background-color: hsl(249, 34%, 53%);
-          padding: 1rem;
-          max-width: 10rem;
-        "
-      >
-        <a href="{% url 'board_detail' board.id %}">- {{ list.title }}</a>
-      </p>
-      {% endfor %}
-    </div>
-    <br />
-    <h3>Cards</h3>
-    <div>
-      {% for card in list.card_set.all %}
-      <p
-        class="cards"
-        style="background-color: hsl(249, 34%, 53%); padding: 1rem;"
-      >
-        <a href="{% url 'board_detail' card.id %}">- {{ card.description }}</a>
-      </p>
-      {% endfor %}
-    </div>
-    {% endblock %}
   </body>
 </html>

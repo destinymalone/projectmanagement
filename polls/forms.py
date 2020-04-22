@@ -16,6 +16,7 @@ class BoardEditForm(forms.ModelForm):
         widgets = {"title": forms.TextInput()}
 
 class CreateListForm(forms.ModelForm):
+    title = forms.CharField(widget=forms.TextInput, label='')
     class Meta:
         model = List
         fields = ['title']
@@ -36,4 +37,4 @@ class CardEditForm(forms.ModelForm):
     class Meta:
         model = Card
         fields = ["description"]
-        widgets = {"description": forms.Textarea()}
+        widgets = {"description": forms.TextInput()}
