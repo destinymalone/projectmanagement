@@ -54,40 +54,188 @@
         box-shadow: inset -2px -2px 3px rgba(255, 255, 255, 0.6),
           inset 2px 2px 3px rgba(0, 0, 0, 0.6);
       }
+      .enter {
+        background-color: #1ef31e;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        padding: 12px 30px;
+        font-size: 1rem;
+        text-align: center;
+        text-decoration: none;
+        text-shadow: 1px 1px 1px #000;
+        background-image: linear-gradient(
+          to top left,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0.2) 30%,
+          rgba(0, 0, 0, 0)
+        );
+        box-shadow: inset 2px 2px 3px rgba(255, 255, 255, 0.6),
+          inset -2px -2px 3px rgba(0, 0, 0, 0.6);
+      }
+
+      .enter:hover {
+        background-color: #5ad309;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .enter:active {
+        box-shadow: inset -2px -2px 3px rgba(255, 255, 255, 0.6),
+          inset 2px 2px 3px rgba(0, 0, 0, 0.6);
+      }
       .title {
         display: inline-block;
         background-color: palevioletred;
+        margin-top: 1rem;
+        border-radius: 3rem;
+        margin: 0 auto 2px;
+        margin-right: 20px;
       }
-
-      .title:hover {
-        background-color: #e20988;
-        cursor: pointer;
-        pointer-events: none;
-      }
-
       .title:active {
         box-shadow: inset -2px -2px 3px rgba(255, 255, 255, 0.6),
           inset 2px 2px 3px rgba(0, 0, 0, 0.6);
       }
+      .lists {
+        display:flex;
+        align-items: start;
+        overflow-x: scroll;
+      }
+
+      .list {
+        min-width: fit-content;
+        max-width: fit-content;
+        background-color: rgba(68, 68, 68, 0.6);
+        padding: 1rem;
+        margin: .5rem;
+      }
+
+      input {
+        margin-top: 2rem;
+      }
+      .card_button {
+        margin-top: 1rem;
+      }
+
+      .card {
+        display: block;
+        background-color: darkcyan;
+        width: 300px;
+        height: max-content;
+        margin-left: -2rem;
+      }
+      .card__description {
+        text-align: center;
+        align-items: center;
+        justify-self: start;
+        min-width: fit-content;
+        min-height: fit-content;
+      }
+
+      .delete {
+        position: relative;
+        margin-top:auto;
+        margin-right: 2px;
+        float: right;
+        display: block;
+
+      }
+
+      .card {
+        position: relative;
+        justify-content: center;
+      }
     </style>
     <body>
       <h1>Project Board - {{ board.title }}</h1>
+      <a class="back" href="/">Back to Personal Boards</a>
 
-      <form method="POST">
-        {% csrf_token %} {{ form.as_p }}
-        <div class="form-group">
-          <a href="{% url 'list_create' board.id %}">Create new list</a>
-          <a href="/">Back to Personal Boards</a>
-        </div>
+      <form class="create" action="{% url 'list_create' board.id %}" method="POST">
+        {% csrf_token %}
+        <input type="text" placeholder="New List Title" name="title" required>
+        <button class="enter">Create List</button>        
       </form>
 
-      <h3>Lists</h3>
+      <section>
+        <h2>Lists</h2>
+        <div class="lists">
+        {% for list in board.list_set.all %}
+            <section class="list">
+              <h3 class="title">{{ list.title }}</h3>
+              <a
+              href="{% url 'list_edit' list.id %}"
+              style="
+                position: relative;
+                text-decoration: none;
+                margin-top: -.5rem;
+                margin-left: 0.5em;
+                float: right;
+                min-width: max-content;
+                background: cadetblue;
+                text-align: center;
+                border-radius: 10px;
+                color: white;
+                font-weight: bold;
+              "
+              >Edit</a
+            >
+            <a
+              href="{% url 'list_delete' list.id %}"
+              style="
+                position: relative;
+                text-decoration: none;
+                margin: auto;
+                margin-top: -0.5em;
+                float: right;
+                width: max-content;
+                background: rgb(221, 23, 23);
+                text-align: center;
+                border-radius: 10px;
+                color: white;
+                font-weight: bold;
+              "
+              >Delete</a
+            >
+              <form action="{% url 'card_create' list.id %}" method="post">
+                {% csrf_token %}
+                <input type="text" placeholder="Add a card" name="description" required>
+                <button class="enter card_button">Create Card</button>
+              </form>
+              <ul class="list__cards">
+                {% for card in list.card_set.all %}
+                  <li class="card">
+                    <p class="card__description">{{ card.description }}</p>
+                    <form action="{% url 'card_delete' card.id %}" method="post">
+                      {% csrf_token %}
+                      <button class="delete">Delete</button>
+                    </form>
+
+                    <form action="{% url 'card_move' card.id %}" method="post">
+                      {% csrf_token %}
+                      <label for="list">Move To</label>
+                      <select name="list" id="list">
+                        {% for list in board.list_set.all %}
+                          <option value="{{ list.id }}">{{ list.title }}</option>                        
+                        {% endfor %}
+                      </select>
+                      <button>Move</button>
+                    </form>
+                  </li>
+                {% endfor %}
+              </ul>
+            </section>
+        {% endfor %}
+        </div>
+      </section>
+
+
+      {% comment %} <h3>Lists</h3>
       <ul
         class="card mb-3"
         style="display: inline-block; margin: auto; max-width: auto;"
       >
         {% for list in board.list_set.all %}
-        <p
+        <section
           style="
             background-color: hsl(249, 34%, 53%);
             padding: 1rem;
@@ -177,6 +325,7 @@
         </div>
         {% endfor %} {% endfor %}
       </ul>
+       {% endcomment %}
       {% endblock %}
     </body>
   </head>

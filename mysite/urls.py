@@ -14,6 +14,7 @@ from polls.views import (
     CreateCardView, 
     CardEditView,
     CardDeleteView,
+    CardMoveView,
 )
 
 
@@ -31,6 +32,7 @@ urlpatterns = [
     path("card/<id>/", CreateCardView.as_view(), name="card_create"),
     path("card/edit/<id>/", CardEditView.as_view(), name="card_edit"),
     path("card/delete/<id>/", CardDeleteView.as_view(), name="card_delete"),
+    path("card/<id>/move/", CardMoveView.as_view(), name="card_move"),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

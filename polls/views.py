@@ -3,13 +3,13 @@ from __future__ import unicode_literals
 from django import views
 from django.shortcuts import redirect, render
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView, View
 from polls.models import Board, List, Card
 from polls.forms import CreateListForm, CreateCardForm, CreateBoardForm, BoardEditForm, ListEditForm, CardEditForm
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponseRedirect, request
 from django.shortcuts import get_object_or_404
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.decorators.http import require_GET, require_POST
 
 
@@ -62,21 +62,15 @@ class BoardDeleteView(LoginRequiredMixin, DeleteView):
 # List
 
 class CreateListView(LoginRequiredMixin, CreateView):
-    form_class = CreateListForm
-    template_name = "boards/board/list.html"
-    success_url = reverse_lazy("board")
-    pk_url_kwarg = "id"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['list_create'] = CreateListForm()
-        id = self.kwargs['id']
-        context['board'] = self.request.user.board_set.get(id=id)
-        return context
+    model = List
+    fields= ['title']
 
     def form_valid(self, form):
         form.instance.board_id = self.kwargs['id']
         return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('board_detail', args=[self.kwargs['id']])
   
 
 
@@ -128,25 +122,18 @@ class ListDeleteView(LoginRequiredMixin, DeleteView):
 # Card
 
 class CreateCardView(LoginRequiredMixin, CreateView):
-    form_class = CreateCardForm
-    template_name = "boards/board/card.html"
-    success_url = reverse_lazy("board")
-    context_object_name = 'card'
-    pk_url_kwarg = "id"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['card_create'] = CreateCardForm()
-        id = self.kwargs['id']
-        context['list'] = List.objects.filter(pk=id)
-
-        return context
+    model = Card
+    fields = ['description']
 
     def form_valid(self, form):
-        form.instance.card_id = Card.objects.filter(list__board=board.list_set.all)
+        form.instance.list_id = self.kwargs['id']
         return super().form_valid(form)
-  
 
+    def get_success_url(self):
+        list = List.objects.get(id=self.kwargs['id'])
+        board = list.board
+        return reverse('board_detail', args=[board.id])
+  
 
 class CardEditView(LoginRequiredMixin, UpdateView):
     model = Card
@@ -161,20 +148,27 @@ class CardEditView(LoginRequiredMixin, UpdateView):
         return context
 
 
-class CardDeleteView(LoginRequiredMixin, DeleteView):
+class CardDeleteView(LoginRequiredMixin, View):
+    def post(self, request, id):
+        card = Card.objects.get(id=id)
+        list = card.list
+        board = list.board
+        if board.username == request.user:
+            card.delete()
+            return redirect('board_detail', board.id)
+        else:
+            return redirect('board')
+
+class CardMoveView(LoginRequiredMixin, UpdateView):
     model = Card
-    pk_url_kwarg = "id"
-    template_name = "boards/board/card_delete.html"
-    success_url = reverse_lazy("board")
+    fields = ['list']
+    pk_url_kwarg = 'id'
 
-    def get_queryset(self):
-        return List.objects.filter(board__username=self.request.user)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
-
-
+    def get_success_url(self):
+        card = Card.objects.get(id=self.kwargs['id'])
+        list = card.list
+        board = list.board
+        return reverse('board_detail', args=[board.id])
 
 # Ordering Lists/Cards
 
