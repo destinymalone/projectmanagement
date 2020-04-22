@@ -118,32 +118,36 @@
       height: 100px;
       background-color: aliceblue;
     }
+    .content {
+      display: inline-block;
+    }
   </style>
-  <body></body>
 </html>
 
 <h1>Personal Boards</h1>
 
-<form method="POST">
-  {% csrf_token %} {{ form.as_p }}
-  <button class="create">Create new board</button>
-  <a href="/">Cancel</a>
-</form>
+<div class="content">
+  <form method="POST">
+    {% csrf_token %} {{ form.as_p }}
+    <button class="create">Create new board</button>
+    <a href="/">Cancel</a>
+  </form>
 
-{% for board in user.board_set.all %}
-<p
-  style="
-    background-color: hsl(249, 34%, 53%);
-    background-image: url('https://mdn.mozillademos.org/files/7693/catfront.png');
-    padding: 1rem;
-    display: inline-block;
-    width: 200px;
-    height: 200px;
-  "
->
-  <a class="title" href="{% url 'board_detail' board.id %}"
-    >{{ board.title }}</a
+  {% for board in user.board_set.all %}
+  <p
+    style="
+      background-color: hsl(249, 34%, 53%);
+      background-image: url('https://mdn.mozillademos.org/files/7693/catfront.png');
+      padding: 1rem;
+      display: inline-block;
+      width: 200px;
+      height: 200px;
+    "
   >
-  <a class="delete" href="{% url 'board_delete' board.id %}">X</a>
-</p>
-{% endfor %} {% endblock %}
+    <a class="title" href="{% url 'board_detail' board.id %}"
+      >{{ board.title }}</a
+    >
+    <a class="delete" href="{% url 'board_delete' board.id %}">X</a>
+  </p>
+  {% endfor %} {% endblock %}
+</div>
